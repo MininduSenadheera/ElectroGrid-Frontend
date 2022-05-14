@@ -309,6 +309,70 @@ public class Bill {
 		}
 	}
 
+    // deleting bill
+    public String deleteBill(String billId) {
+
+        BillBean billBean = new BillBean();
+        billBean.setBillID(Integer.parseInt(billId));
+
+        try {
+            Connection connection = DBConnection.connect();
+            BillValidations validations = new BillValidations();
+
+            if (connection == null) {
+                return "{\"status\":\"error\", \"code\":500, \"data\":\"Error while connecting database for deleting bill.\"}";
+            }
+
+            // validating data
+            if (validations.deleteValidation(billBean.getBillID()) == false){
+                return "{\"status\":\"error\", \"code\":412, \"data\":\"Unacceptable Values.\"}";
+            }
+
+
+            // get payment related to bill
+            String sql1 = "SELECT paymentID, connectionID FROM Bill WHERE billID = ?";
+            PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
+            preparedStatement1.setInt(1, billBean.getBillID());
+            ResultSet resultSet = preparedStatement1.executeQuery();
+
+            String connectionID ="";
+
+            // call payment delete only if a payment is related to bill
+            if(resultSet.next()) {
+                billBean.setPaymentID(resultSet.getInt("paymentID"));
+                connectionID = resultSet.getString("connectionID");
+
+                if (billBean.getPaymentID() != 0) {
+                    
+                }
+            }
+
+            // delete bill
+            String sql2 = "DELETE FROM Bill WHERE billID = ? ";
+            PreparedStatement preparedStatement2 = connection.prepareStatement(sql2);
+            preparedStatement2.setInt(1, billBean.getBillID());
+            int status = preparedStatement2.executeUpdate(); 
+
+            connection.close(); 
+
+            //checking if the bill is updated
+            if(status > 0) {
+            	String newBills = readConnectionBills(connectionID);
+                
+                return "{\"status\":\"success\", \"code\":200, \"data\":" + newBills + "}";
+            } else {
+                return "{\"status\":\"error\", \"code\":404, \"data\":\"No bills found with the corresponding ID.\"}";
+            }
+
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+            return "{\"status\":\"error\", \"code\":304, \"data\":\"" + se.getMessage() + "\"}";
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return "{\"status\":\"error\", \"code\":500, \"data\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
     // this method call update units method in connection service
 	public String GetMonthlyUnitsFromConnectionService(BillBean billBean) {
         String output = "";
