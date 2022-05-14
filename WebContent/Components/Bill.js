@@ -128,3 +128,47 @@ function onBillUpdateComplete(response, status) {
     $("#updateForm")[0].reset();
     $('#updateForm').hide();
 }
+
+// DELETE
+$(document).on("click",".btnRemove", function(event) {
+    // ajax communication
+    $.ajax({
+        url: "BillAPI",
+        type: "DELETE",
+        data: "billID=" + $(this).data("billid"),
+        dataType: "text",
+        complete: function(response, status) {
+            onBillDeleteComplete(response.responseText, status);
+        }
+    });
+});
+
+// after completing delete request
+function onBillDeleteComplete(response, status) {
+
+    if (status == "success") { //if the response status is success
+        var resultSet = JSON.parse(response);
+
+        if (resultSet.status.trim() === "success") { //if the json status is success
+            //display success alert
+            $("#alertSuccess").text("Successfully deleted");
+            $("#alertSuccess").show();
+    
+            //load data in json to html
+            $("#divBillsGrid").html(resultSet.data.data);
+
+        } else if (resultSet.status.trim() === "error") { //if the json status is error
+            //display error alert
+            $("#alertError").text(resultSet.data);
+            $("#alertError").show();
+        }
+    } else if (status == "error") { 
+        //if the response status is error
+        $("#alertError").text("Error while deleting");
+        $("#alertError").show();
+    } else { 
+        //if an unknown error occurred
+        $("#alertError").text("Unknown error occurred while deleting");
+        $("#alertError").show();
+    } 
+}
