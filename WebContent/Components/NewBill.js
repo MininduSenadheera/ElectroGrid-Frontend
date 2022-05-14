@@ -77,3 +77,36 @@ function onSaveComplete(response, status) {
     //resetting the form
     $("#newBillForm")[0].reset();
 }
+
+// VALIDATION
+function validateIssueForm() { 
+
+    // connection Id 
+    if ($("#conId").val().trim() == "") 
+    { 
+        return "Insert an ID."; 
+    } 
+
+    // is numerical value 
+    var tmpID = $("#conId").val().trim(); 
+    if (!$.isNumeric(tmpID)) 
+    { 
+        return "Insert a numerical value for ID."; 
+    } 
+    
+    // meter reading
+    if ($("#meterReading").val().trim() == "") 
+    { 
+        return "Insert a meter reading."; 
+    } 
+    
+    // is numerical value 
+    var tmpReading = $("#meterReading").val().trim(); 
+    if (!$.isNumeric(tmpReading)) 
+    { 
+        return "Insert a numerical value for meter reading."; 
+    } 
+    
+    return true; 
+} 
+ 
