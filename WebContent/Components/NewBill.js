@@ -35,3 +35,45 @@ $(document).on("click","#btnIssue", function(event) {
         }
     });
 });
+
+function onSaveComplete(response, status) {
+
+    if (status == "success") { //if the response status is success
+        var resultSet = JSON.parse(response);
+
+        if (resultSet.status.trim() === "success") { //if the json status is success
+            //display success alert
+            $("#alertSuccess").text("Successfully Issued");
+            $("#alertSuccess").show();
+            
+            $("#newBillGrid").show();
+
+            //load data in json to html
+            $('#customerName').text(resultSet.data.data.customerName.trim()); 
+            $('#customerID').text(resultSet.data.data.customerID); 
+            $('#connectionID').text(resultSet.data.data.connectionID); 
+            $('#newBillTable tr:last').after('<tr><td>'+resultSet.data.data.billID+
+                                            '</td><td>'+resultSet.data.data.issuedDate+
+                                            '</td><td>'+resultSet.data.data.dueDate+
+                                            '</td><td>'+resultSet.data.data.units+
+                                            '</td><td>'+resultSet.data.data.amount+
+                                            '</td><td>'+resultSet.data.data.status+'</td></tr>');
+
+        } else if (resultSet.status.trim() === "error") { //if the json status is error
+            //display error alert
+            $("#alertError").text(resultSet.data);
+            $("#alertError").show();
+        }
+    } else if (status == "error") { 
+        //if the response status is error
+        $("#alertError").text("Error while issuing bill");
+        $("#alertError").show();
+    } else { 
+        //if an unknown error occurred
+        $("#alertError").text("Unknown error occurred while saving");
+        $("#alertError").show();
+    } 
+
+    //resetting the form
+    $("#newBillForm")[0].reset();
+}
