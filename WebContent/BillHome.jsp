@@ -53,6 +53,57 @@
 					</div>
 				</div>
 			</form>
+			<br>
+			<form id="updateForm" name="updateForm" method="PUT" action="BillHome.jsp">
+				<div class="row">
+					<div class="col-xl-3">
+						<div class="form-group">
+							<label for="billID">Bill ID</label>
+							<input 
+								id="billID" 
+								name="billID" 
+								type="text" 
+								class="form-control"
+								readonly
+							>
+						</div>
+					</div>
+					<div class="col-xl-3">
+						<div class="form-group">
+							<label for="connectionID">Connection ID</label>
+							<input 
+								id="connectionID" 
+								name="connectionID" 
+								type="text" 
+								class="form-control"
+								readonly
+							>
+						</div>
+					</div>
+					<div class="col-xl-3">
+						<div class="form-group">
+							<label for="paymentID">Payment ID</label>
+							<input 
+								id="paymentID" 
+								name="paymentID" 
+								type="text" 
+								class="form-control"
+								placeholder="Enter payment ID"
+							>
+						</div>
+					</div>
+					<div class="col-xl-3 mt-4">
+						<input 
+							id="update" 
+							name="update" 
+							type="button" 
+							value="Update Bills" 
+							class="btn btn-success"
+						>
+					</div>
+				</div>
+			</form>
+		</div>
 		<br>
 		<div class="container-fluid">
 			<div id="alertSuccess" class="alert alert-success"></div>
