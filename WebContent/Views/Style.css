@@ -1,0 +1,9 @@
+body{
+    background-color: #F6F7FB;
+    color: #474D58;
+    transition: background-color 1s ease;
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
