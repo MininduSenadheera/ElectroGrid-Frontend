@@ -22,6 +22,37 @@
 				</div>
 			</div>
 		</nav>
-
+		<div class="container">
+			<h1 class="mb-3 title">Issue Bill</h1>
+			<form id="newBillForm" name="newBillForm" method="POST" class="formBox" action="NewBill.jsp"> 
+				<div class="row">
+					<div class="col-xl-8">
+						<div class="form-group">
+							<label for="conId">Connection ID</label>
+							<input type="text" class="form-control" id="conId" name="conId" placeholder="Connection ID">
+						</div>
+						<div class="form-group">
+							<label for="meterReading">Meter Reading</label>
+							<input type="text" class="form-control" id="meterReading" name="meterReading" placeholder="Meter Reading">
+						</div>
+					</div>
+					<div class="col-xl-4">
+						
+					</div>
+				</div>                   
+				<input 
+					id="btnIssue" 
+					name="btnIssue" 
+					type="button" 
+					value="Issue Bill" 
+					class="btn btn-primary"
+				>
+			</form>
+		
+			<br>
+			<div id="alertSuccess" class="alert alert-success"></div>
+			<div id="alertError" class="alert alert-danger"></div>
+			<br>
+		</div>
 	</body>
 </html>
