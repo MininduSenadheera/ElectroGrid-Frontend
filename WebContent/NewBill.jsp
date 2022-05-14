@@ -53,6 +53,32 @@
 			<div id="alertSuccess" class="alert alert-success"></div>
 			<div id="alertError" class="alert alert-danger"></div>
 			<br>
+			<div id="newBillGrid" class="formBox">
+				<div class="row">
+					<div class="col-xl-12" >
+						<h3 class="title mb-3" align="center">ElectroGrid Monthly Bill</h3>
+						
+						<h5>Customer Name: <span id="customerName"></span></h5>
+						<h5>Customer ID: <span id="customerID"></span></h5>
+						<h5>Connection ID: <span id="connectionID"></span></h5>
+						<hr>
+					</div>
+					<div class="col-xl-12">
+						<div id="newBillTable" class="blue-table box-table">
+							<table >
+								<tr>
+									<th>Bill ID</th>
+									<th>Issued Date</th>
+									<th>Due Date</th>
+									<th>Units</th>
+									<th>Amount</th>
+									<th>Payment Status</th>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
