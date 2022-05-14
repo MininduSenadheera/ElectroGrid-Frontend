@@ -208,4 +208,57 @@ public class Bill {
         }
     }
 
+    // issuing a new bill
+    public String newBill(String connectionID, String meterReading) {
+        BillBean billBean = new BillBean();
+        billBean.setConnectionID(Integer.parseInt(connectionID));
+        billBean.setUnits(Integer.parseInt(meterReading));
+
+        try {
+            Connection connection = DBConnection.connect();
+            BillValidations validations = new BillValidations();
+
+            if (connection == null) {
+                return "{\"status\":\"error\", \"code\":500, \"data\":\"Error while connecting database for inserting bill\"}";
+            }
+
+            // validating data
+            if (validations.insertValidation(billBean.getConnectionID(), billBean.getUnits()) == false){
+                return "{\"status\":\"error\", \"code\":412, \"data\":\"Unacceptable Values.\"}";
+            }
+
+            // get units difference
+            String d_units = GetMonthlyUnitsFromConnectionService(billBean);
+            int diff_units = Integer.parseInt(d_units);
+            billBean.calculateAmount(diff_units);
+
+            String sql =    " INSERT INTO Bill (`connectionID`,`issueDate`,`dueDate`,`units`,`amount`,`status`)" + 
+                            " values (?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), ?, ?, ?)";
+
+            String[] billID = { "billID" };
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql,billID);
+			preparedStatement.setInt(1, billBean.getConnectionID());
+			preparedStatement.setInt(2, diff_units);
+            preparedStatement.setDouble(3, billBean.getAmount());
+            preparedStatement.setString(4, "Pending");
+            preparedStatement.execute();
+
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+	        String key="";
+					
+            if (resultSet.next()) {  
+                key=resultSet.getString(1);
+            }
+
+            String insertedBill = readBill(key);
+            
+            return "{\"status\":\"success\", \"code\":200, \"data\":" + insertedBill + "}";
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return "{\"status\":\"error\", \"code\":500, \"data\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
 }
