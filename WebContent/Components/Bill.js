@@ -172,3 +172,29 @@ function onBillDeleteComplete(response, status) {
         $("#alertError").show();
     } 
 }
+
+// VALIDATION
+function validateSearchForm() { 
+
+    // Id type 
+    if ($("#idType").val().trim() == "") 
+    { 
+        return "Select an ID type."; 
+    } 
+    
+    // Id code
+    if ($("#idCode").val().trim() == "") 
+    { 
+        return "Insert an ID."; 
+    } 
+    
+    // is numerical value 
+    var tmpID = $("#idCode").val().trim(); 
+    if (!$.isNumeric(tmpID)) 
+    { 
+        return "Insert a numerical value for ID."; 
+    } 
+    
+    return true; 
+} 
+ 
