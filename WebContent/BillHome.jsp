@@ -23,5 +23,42 @@
 		    </div>
 		  </div>
 		</nav>
+		<div class="container">
+			<h1 class="mb-3 title">Search Bills</h1>
+			<form id="searchForm" name="searchForm" method="POST" action="BillHome.jsp">
+				<div class="row">
+					<div class="col-xl-3">
+						<select class="form-control" id="idType" name="idType">
+							<option value="Connection">Connection ID</option>
+							<option value="Customer">Customer ID</option>
+						</select>
+					</div>
+					<div class="col-xl-7">
+						<input 
+							id="idCode" 
+							name="idCode" 
+							type="text" 
+							class="form-control"
+							placeholder="Enter the ID"
+						>
+					</div>
+					<div class="col-xl-2">
+						<input 
+							id="btnSearch" 
+							name="btnSearch" 
+							type="button" 
+							value="Search Bills" 
+							class="btn btn-success"
+						>
+					</div>
+				</div>
+			</form>
+		<br>
+		<div class="container-fluid">
+			<div id="alertSuccess" class="alert alert-success"></div>
+			<div id="alertError" class="alert alert-danger"></div>
+			<br>
+			<div id="divBillsGrid" class="blue-table box-table"></div>
+		</div>
 	</body>
 </html>
