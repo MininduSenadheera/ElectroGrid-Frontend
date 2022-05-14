@@ -59,3 +59,21 @@ function onSearchComplete(response, status) {
         $("#alertError").show();
     } 
 }
+
+// UPDATE
+$(document).on("click", ".btnUpdate", function(event) 
+{ 
+    // Clear alerts
+    $("#alertSuccess").text(""); 
+    $("#alertSuccess").hide(); 
+    $("#alertError").text(""); 
+    $("#alertError").hide();
+
+    //get item id from the data-itemid attribute in update button
+    $("#billID").val($(this).data('billid')); 
+    //get data from <td> element
+    $("#connectionID").val($(this).closest("tr").find('td:eq(0)').text()); 
+
+    $('#updateForm').show();
+});
+
