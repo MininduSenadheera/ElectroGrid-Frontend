@@ -261,6 +261,54 @@ public class Bill {
         }
     }
 
+    // updating bill
+    public String updateBill(String billId, String connectionID, String paymentID) {
+
+        BillBean billBean = new BillBean();
+        billBean.setPaymentID(Integer.parseInt(paymentID));
+        billBean.setBillID(Integer.parseInt(billId));
+
+		try {
+			Connection connection = DBConnection.connect(); 
+            BillValidations validations = new BillValidations();
+			
+			if (connection == null) {
+				return "{\"status\":\"error\", \"code\":500, \"data\":\"Error while connecting database for updating bill\"}";
+			}
+
+            // validating data
+            if (validations.updateValidation(billBean.getBillID(), billBean.getPaymentID()) == false){
+                return "{\"status\":\"error\", \"code\":412, \"data\":\"Unacceptable Values.\"}";
+            }
+
+            String sql = "UPDATE Bill SET paymentID = ?, status = ? WHERE billID = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, billBean.getPaymentID());
+            preparedStatement.setString(2, "Paid");
+            preparedStatement.setInt(3, billBean.getBillID());
+            int status = preparedStatement.executeUpdate();
+
+			connection.close();
+
+            //checking if the bill is updated
+            if(status > 0) {
+                String newBills = readConnectionBills(connectionID);
+                
+                return "{\"status\":\"success\", \"code\":200, \"data\":" + newBills + "}"; 
+            } else {
+                return "{\"status\":\"error\", \"code\":404, \"data\":\"No bills found with the corresponding ID.\"}";
+            }
+			
+		} catch (SQLException se) {
+            System.err.println(se.getMessage());
+            return "{\"status\":\"error\", \"code\":304, \"data\":\"" + se.getMessage() + "\"}";
+        } catch (Exception e) {
+			System.err.println(e.getMessage());
+            return "{\"status\":\"error\", \"code\":500, \"data\":\"" + e.getMessage() + "\"}";
+		}
+	}
+
     // this method call update units method in connection service
 	public String GetMonthlyUnitsFromConnectionService(BillBean billBean) {
         String output = "";
