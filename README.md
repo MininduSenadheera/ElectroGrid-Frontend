@@ -19,5 +19,5 @@ Develop a rich web-based application using the Form and Grid pattern to perform 
 operations on your selected resource by communicating with your RESTful web-service.
 
 # Author
-Name:- H.A.Minindu Senadheera 
+Name:- H.A.Minindu Senadheera <br>
 Registration No:- IT20125998
